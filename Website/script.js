@@ -21,7 +21,7 @@ function register() {
         })
     }).then(() => alert("Registered"));
 }
-
+// Post a new message
 function post() {
     fetch('/post', {
         method: 'POST',
