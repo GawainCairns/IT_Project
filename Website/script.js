@@ -1,3 +1,4 @@
+//login as an existing user
 function login() {
     fetch('/login', {
         method: 'POST',
@@ -10,6 +11,7 @@ function login() {
         .then(() => location.href = "dashboard.html");
 }
 
+//register a new user
 function register() {
     fetch('/register', {
         method: 'POST',
@@ -21,6 +23,7 @@ function register() {
         })
     }).then(() => alert("Registered"));
 }
+
 // Post a new message
 function post() {
     fetch('/post', {
@@ -30,6 +33,7 @@ function post() {
     }).then(load);
 }
 
+// Load all posts
 function load() {
     fetch('/posts')
         .then(res => res.json())
