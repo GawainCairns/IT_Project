@@ -1,0 +1,17 @@
+CREATE DATABASE forum_app;
+
+USE forum_app;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100),
+    email VARCHAR(100),
+    password VARCHAR(255)
+);
+
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

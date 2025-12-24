@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forum — ServeysApp</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav>
+        <ul class="navbar">
+            <li class="navbar_left"><a href="index.html">ServeysApp</a></li>
+            <li class="navbar_left"><a href="dashboard.html">Dashboard</a></li>
+            <li class="navbar_left"><a href="forum.html">Forum</a></li>
+            <li class="navbar_left"><a href="about.html">About</a></li>
+            <li class="navbar_left"><a href="contact.html">Contact</a></li>
+            <li class="navbar_right"><a href="login.html">Login</a></li>
+            <li class="navbar_right"><a href="register.html">Register</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main -->
+    <main>
+        <h2>Forum</h2>
+        <textarea id="content"></textarea>
+        <button onclick="post()">Post</button>
+        <div id="posts"></div>
+    </main>
+
+    <!-- Load posts -->
+    <script>
+        load();
+    </script>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <p class="brand">ServeysApp</p>
+                <p>Quick surveys, meaningful results.</p>
+            </div>
+            <div class="footer-center">
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="forum.html">Forum</a>
+            </div>
+            <div class="footer-right">
+                <p>© 2025 ServeysApp</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

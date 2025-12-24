@@ -1,0 +1,203 @@
+/*body*/
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #ffffff;
+  padding: 0;
+  margin: 0;
+}
+/*body end*/
+
+/*Nav bar*/
+ul.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+}
+
+ul.navbar li.navbar_left {
+  float: left;
+}
+
+ul.navbar li.navbar_left a.navbar {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+ul.navbar li.navbar_left a.navbar:hover {
+  background-color: #111111;
+}
+/* right-aligned items */
+ul.navbar li.navbar_right {
+  float: right;
+}
+
+/* generic selectors for any li/a inside .navbar (keeps previous rules working) */
+ul.navbar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+ul.navbar li a:hover {
+  background-color: #111111;
+}
+
+@media (max-width: 600px) {
+  ul.navbar li, ul.navbar li.right {
+    float: none;
+    width: 100%;
+    text-align: center;
+  }
+}
+/*nav bar end*/
+
+/*form*/
+input, textarea, button, h2 {
+    display: block;
+    margin: 10px 0;
+    padding: 8px;
+    width: 250px;
+    margin: auto;    
+}
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    margin: auto;
+}
+/*form end*/
+
+/*Login/register*/
+div.divlogin, div.divregister {
+    background-color: antiquewhite;
+    max-width: 400px;
+    margin: auto;
+    border-color: bisque;
+    border-style: solid;
+    border-width: 2px;
+}
+/*Login/register end*/
+
+/* Footer */
+.home-main {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+main {
+  flex: 1;
+}
+
+.hero {
+  background: linear-gradient(135deg, #4b79a1 0%, #283e51 100%);
+  color: white;
+  padding: 48px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+.hero-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+.hero h1 {
+  margin: 0 0 12px 0;
+  font-size: 32px;
+}
+.hero p { 
+  margin: 8px 0;
+  color: #eef3f7;
+}
+.btn-cta {
+  display: inline-block;
+  background: #ff7a59;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-top: 12px;
+}
+.btn-cta:hover { opacity: 0.95 }
+
+.features h2 {
+  margin: 10px 0 14px 0;
+  text-align: center;
+}
+.cards {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.card {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  padding: 14px;
+  width: 260px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.card h3 { margin: 0 0 8px 0 }
+.card p { margin: 0 0 12px 0; color: #444 }
+.card-link { color: #007bff; text-decoration: none }
+.card-link:hover { text-decoration: underline }
+
+@media (max-width: 700px) {
+  .hero h1 { font-size: 24px }
+  .cards { flex-direction: column; align-items: center }
+}
+.site-footer {
+  background: #222;
+  color: #ddd;
+  padding: 20px 0;
+  margin-top: auto;
+  font-size: 14px;
+}
+.site-footer .footer-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  gap: 16px;
+}
+.site-footer .footer-left .brand {
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px 0;
+}
+.site-footer a {
+  color: #bbb;
+  margin: 0 8px;
+  text-decoration: none;
+}
+.site-footer a:hover {
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .site-footer .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .site-footer .footer-center {
+    margin: 8px 0;
+  }
+}
+/* Footer end */
