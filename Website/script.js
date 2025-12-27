@@ -24,23 +24,3 @@ function register() {
     }).then(() => alert("Registered"));
 }
 
-// Post a new message
-function post() {
-    fetch('/post', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: 1, content: content.value })
-    }).then(load);
-}
-
-// Load all posts
-function load() {
-    fetch('/posts')
-        .then(res => res.json())
-        .then(data => {
-            posts.innerHTML = "";
-            data.forEach(p => {
-                posts.innerHTML += `<p>${p.content}</p>`;
-            });
-        });
-}
