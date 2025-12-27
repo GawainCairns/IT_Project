@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Create Survey — ServeysApp</title>
 	<link rel="stylesheet" href="css/style.css">
+	<script src="script.js" defer></script>
 	<script src="surveycreator.js" defer></script>
 </head>
 
@@ -24,17 +25,29 @@
 
 	<!-- Main -->
 	<main>
-        <!--
-            Profile page functionalities:
-            - View and edit personal information (name, email, password)
-            - View surveys
-            - View survey responses
-            - Create new survey button
-            - Manage account settings
-            - Logout option
-            - Delete account option
-                - Confirmation prompt before deletion
-        -->
+		<section class="profile-container">
+			<h1>Your Profile</h1>
+			<form id="profileForm">
+				<label for="nameInput">Name</label>
+				<input id="nameInput" name="name" type="text">
+
+				<label for="emailInput">Email</label>
+				<input id="emailInput" name="email" type="email">
+
+				<label for="passwordInput">Password</label>
+				<input id="passwordInput" name="password" type="password" placeholder="Leave blank to keep current">
+
+				<div class="profile-actions">
+					<button id="saveProfileBtn" type="button" class="btn">Save</button>
+					<button id="createSurveyBtnProfile" type="button" class="btn">Create Survey</button>
+					<button id="logoutBtnProfile" type="button" class="btn">Logout</button>
+					<button id="deleteAccountBtn" type="button" class="btn btn-danger">Delete Account</button>
+				</div>
+			</form>
+
+			<h2>Your Surveys</h2>
+			<div id="userSurveys">Loading your surveys...</div>
+		</section>
 	</main>
 
 	<!-- Footer -->

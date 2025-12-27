@@ -26,19 +26,16 @@
     <main>
         <h1>Dashboard</h1>
         <p>Welcome to your dashboard. Here you can manage your surveys.</p>
-        <!-- Functions of the dashboard:
-            Survey management options:
-            - Create new survey
-            - View existing surveys
-            - Edit surveys
-            - View survey responses
-            - Analyze survey data
-            - Share surveys
-            - Delete surveys
-            User account options:
-            - View profile
-            - logout 
-        -->
+        <div class="dashboard-actions">
+            <a class="btn" href="surveycreator.html" id="createSurveyBtn">Create New Survey</a>
+            <button id="profileBtn" class="btn">Profile</button>
+            <button id="logoutBtn" class="btn">Logout</button>
+        </div>
+
+        <section>
+            <h2>Your Surveys</h2>
+            <div id="surveysList">Loading surveys...</div>
+        </section>
     </main>
 
     <!-- Footer -->
