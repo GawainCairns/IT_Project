@@ -39,21 +39,7 @@ app.post("/login", (req, res) => {
     );
 });
 
-/* Forum post */
-app.post("/post", (req, res) => {
-    const { user_id, content } = req.body;
-    db.query(
-        "INSERT INTO posts (user_id, content) VALUES (?, ?)",
-        [user_id, content],
-        () => res.send("Posted")
-    );
-});
+/* Get Users */
 
-/* Get posts */
-app.get("/posts", (req, res) => {
-    db.query("SELECT * FROM posts", (err, results) => {
-        res.json(results);
-    });
-});
 
 app.listen(3000, () => console.log("Server running on port 3000"));

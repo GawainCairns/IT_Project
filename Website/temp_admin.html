@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Temp Admin - Database Tables</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:18px}
+    header{display:flex;align-items:center;justify-content:space-between}
+    select{min-width:220px;padding:6px}
+    table{border-collapse:collapse;width:100%;margin-top:12px}
+    th,td{border:1px solid #ddd;padding:8px;text-align:left}
+    th{background:#f4f4f4}
+    .notice{color:#666;margin-top:12px}
+    .error{color:#a00}
+    textarea{width:100%;height:160px}
+    .controls{margin-top:12px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Temporary Admin — Database Tables</h1>
+    <div>
+      <label for="tableSelect">Table:</label>
+      <select id="tableSelect"></select>
+    </div>
+  </header>
+
+  <div id="content"></div>
+
+  <div class="notice" id="notice">Attempting to fetch tables from <code>/admin/tables</code>…</div>
+
+  <div style="margin-top:14px">
+    <strong>If your server has no endpoint:</strong>
+    <p>Paste JSON shaped like <code>{"tables": {"users": [{...}, ...], "surveys": [...]}}</code> into the textarea and click <em>Load JSON</em>.</p>
+    <textarea id="jsonInput" placeholder='{"tables": {"users": []}}'></textarea>
+    <div class="controls"><button id="loadJson">Load JSON</button></div>
+  </div>
+
+  <script>
+    const tableSelect = document.getElementById('tableSelect');
+    const content = document.getElementById('content');
+    const notice = document.getElementById('notice');
+    let tablesData = {};
+
+    function renderTableRows(rows){
+      if (!rows || rows.length === 0) return '<div>No rows</div>';
+      const cols = Object.keys(rows[0]);
+      let html = '<table><thead><tr>' + cols.map(c=>'<th>'+escapeHtml(c)+'</th>').join('') + '</tr></thead><tbody>';
+      html += rows.map(r => '<tr>' + cols.map(c => '<td>'+escapeHtml(String(r[c]===null?'NULL':r[c]))+'</td>').join('') + '</tr>').join('');
+      html += '</tbody></table>';
+      return html;
+    }
+
+    function escapeHtml(s){
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function populateSelect(){
+      tableSelect.innerHTML = '';
+      Object.keys(tablesData).forEach((t,i)=>{
+        const opt = document.createElement('option');
+        opt.value = t; opt.textContent = t; if(i===0) opt.selected = true;
+        tableSelect.appendChild(opt);
+      });
+      if (tableSelect.options.length) showTable(tableSelect.value);
+    }
+
+    function showTable(name){
+      const rows = tablesData[name] || [];
+      content.innerHTML = '<h2>'+escapeHtml(name)+'</h2>' + renderTableRows(rows);
+    }
+
+    tableSelect.addEventListener('change', ()=> showTable(tableSelect.value));
+
+    async function tryFetch(url){
+      try{
+        const res = await fetch(url, {credentials:'same-origin'});
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const data = await res.json();
+        return data;
+      }catch(e){
+        return null;
+      }
+    }
+
+    (async function init(){
+      // try a couple of common endpoints
+      const endpoints = ['/admin/tables','/api/tables','/tables','/db/tables'];
+      let resp = null;
+      for(const ep of endpoints){
+        notice.textContent = 'Trying '+ep+' ...';
+        resp = await tryFetch(ep);
+        if(resp) { notice.textContent = 'Loaded from '+ep; break; }
+      }
+      if(resp && resp.tables){
+        tablesData = resp.tables;
+        populateSelect();
+        return;
+      }
+      notice.innerHTML = 'No endpoint returned table JSON. Use the textarea below or add a server endpoint <span class="error">/admin/tables</span> that returns <code>{"tables": { ... }}</code>.';
+    })();
+
+    document.getElementById('loadJson').addEventListener('click', ()=>{
+      try{
+        const parsed = JSON.parse(document.getElementById('jsonInput').value);
+        if(!parsed.tables) return alert('JSON must have a top-level "tables" object');
+        tablesData = parsed.tables;
+        populateSelect();
+        notice.textContent = 'Loaded from manual JSON';
+      }catch(e){ alert('Invalid JSON: '+e.message); }
+    });
+  </script>
+</body>
+</html>
