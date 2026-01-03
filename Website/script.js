@@ -1,6 +1,29 @@
 // Helper: safe element lookup
 function el(id) { return document.getElementById(id); }
 
+// Cookie helpers
+function setCookie(name, value, days) {
+    let expires = '';
+    if (days) {
+        const d = new Date();
+        d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = '; expires=' + d.toUTCString();
+    }
+    document.cookie = name + '=' + encodeURIComponent(value) + expires + '; path=/';
+}
+
+function deleteCookie(name) {
+    document.cookie = name + '=; Max-Age=0; path=/';
+}
+
+function setUserCookie(userObj, days = 7) {
+    try {
+        setCookie('user', JSON.stringify({ id: userObj.id, username: userObj.username }), days);
+    } catch (e) { console.error('Failed to set user cookie', e); }
+}
+
+function clearUserCookie() { deleteCookie('user'); }
+
 // Login as an existing user (tries common field ids)
 async function login(e) {
     if (e && e.preventDefault) e.preventDefault();
@@ -14,7 +37,12 @@ async function login(e) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: emailEl.value, password: passwordEl.value })
         });
-        if (res.ok) return location.href = 'dashboard.html';
+        if (res.ok) {
+            // try to read returned user info (id and username) and set a cookie
+            const data = await res.json().catch(() => null);
+            if (data && (data.id || data.username)) setUserCookie({ id: data.id, username: data.username }, 7);
+            return location.href = 'dashboard.html';
+        }
         const err = await res.json().catch(() => ({}));
         alert(err.message || 'Login failed');
     } catch (err) {
@@ -98,6 +126,8 @@ async function logout(){
     try {
         await fetch('/logout', { method: 'POST' });
     } catch (e) { /* ignore */ }
+    // clear local user cookie then redirect
+    clearUserCookie();
     location.href = 'index.html';
 }
 

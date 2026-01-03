@@ -1,6 +1,10 @@
 // Minimal Survey Creator
 document.addEventListener('DOMContentLoaded', () => {
     const main = document.querySelector('main');
+    // ensure the survey UI is centered on the page
+    main.classList.add('creator-main');
+    
+    // build the UI structure inside <main> element
     main.innerHTML = `
         <h1>Create a Survey</h1>
         <div id="survey-settings" class="card">
@@ -19,16 +23,19 @@ document.addEventListener('DOMContentLoaded', () => {
         <div id="export-area" style="display:none">
             <h3>Exported JSON</h3>
             <textarea id="export-json-text" rows="10" style="width:100%"></textarea>
-        </div>
+        </div>    
     `;
 
+    // references to key elements
     const questionsEl = document.getElementById('questions');
     const addQuestionBtn = document.getElementById('add-question');
     const previewBtn = document.getElementById('preview-survey');
     const exportBtn = document.getElementById('export-json');
 
+    // question ID counter
     let questionIdCounter = 1;
 
+    // function to create a question card element
     function createQuestionCard(initial = {}) {
         const id = questionIdCounter++;
         const q = document.createElement('div');
@@ -98,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return q;
     }
 
+    // function to append an option item to options list
     function appendOption(listEl, value) {
         const item = document.createElement('div');
         item.className = 'option-item';
@@ -120,11 +128,13 @@ document.addEventListener('DOMContentLoaded', () => {
         listEl.appendChild(item);
     }
 
+    // event listeners for main buttons
     addQuestionBtn.addEventListener('click', () => {
         const card = createQuestionCard();
         questionsEl.appendChild(card);
     });
 
+    // export survey as JSON
     exportBtn.addEventListener('click', () => {
         const data = buildSurveyObject();
         const exportArea = document.getElementById('export-area');
@@ -133,11 +143,13 @@ document.addEventListener('DOMContentLoaded', () => {
         exportArea.style.display = 'block';
     });
 
+    // preview survey
     previewBtn.addEventListener('click', () => {
         const data = buildSurveyObject();
         openPreview(data);
     });
 
+    // function to build survey object from UI
     function buildSurveyObject() {
         const title = document.getElementById('survey-title').value || '';
         const description = document.getElementById('survey-description').value || '';
@@ -157,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return { title, description, questions: qs };
     }
 
+    // function to open preview window
     function openPreview(survey) {
         const w = window.open('', '_blank', 'width=700,height=800,scrollbars=1');
         const doc = w.document;
@@ -180,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.close();
     }
 
+    // function to escape HTML special characters
     function escapeHtml(s) {
         if (!s) return '';
         return s.replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]);

@@ -112,6 +112,24 @@ main {
   padding-right: 24px;
 }
 
+/* Centered layout for survey creator UI */
+.creator-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center horizontally */
+  justify-content: flex-start; /* allow vertical scrolling when content grows */
+  gap: 16px;
+  padding: 24px 16px;
+  min-height: calc(100vh - 120px); /* leave room for navbar + footer */
+  box-sizing: border-box;
+  overflow: auto; /* enable scrolling when content overflows */
+}
+
+/* Ensure the inner UI doesn't stretch too wide while remaining part of <main> */
+.creator-main > * {
+  width: 100%;
+  max-width: 900px;
+}
 .hero {
   background: linear-gradient(135deg, #4b79a1 0%, #283e51 100%);
   color: white;
@@ -143,6 +161,10 @@ main {
 }
 .btn-cta:hover { opacity: 0.95 }
 
+.controls {
+  text-align: center;
+  margin-bottom: 24px;
+}
 .features h2 {
   margin: 10px 0 14px 0;
   text-align: center;
@@ -160,6 +182,7 @@ main {
   width: 260px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  text-align: center;
 }
 .card h3 { margin: 0 0 8px 0 }
 .card p { margin: 0 0 12px 0; color: #444 }

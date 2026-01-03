@@ -7,7 +7,6 @@
 	<title>Create Survey — ServeysApp</title>
 	<link rel="stylesheet" href="css/style.css">
 	<script src="script.js" defer></script>
-	<script src="surveycreator.js" defer></script>
 </head>
 
 <body>
@@ -24,29 +23,31 @@
 	</nav>
 
 	<!-- Main -->
-	<main>
-		<section class="profile-container">
+	<main class="creator-main">
+		<section>
+			<!--
+				TODO: connect this form to the backend to load and manage the current user.
+				- GET /api/user -> populate `#name`, `#surname`, `#email` with the authenticated user
+				- POST /api/logout -> call on `#logoutBtnProfile` click
+				- DELETE /api/user -> call on `#deleteAccountBtn` click (confirm first)
+				Ensure authentication (session/token) and CSRF protections as required by your backend.
+			-->
 			<h1>Your Profile</h1>
 			<form id="profileForm">
-				<label for="nameInput">Name</label>
-				<input id="nameInput" name="name" type="text">
+				<label for="name">Name</label>
+				<label id="name"><i>Placeholder</i></label><br>
 
-				<label for="emailInput">Email</label>
-				<input id="emailInput" name="email" type="email">
+				<label for="surname">Surname</label>
+				<label id="surname"><i>Placeholder</i></label><br>
 
-				<label for="passwordInput">Password</label>
-				<input id="passwordInput" name="password" type="password" placeholder="Leave blank to keep current">
-
-				<div class="profile-actions">
-					<button id="saveProfileBtn" type="button" class="btn">Save</button>
-					<button id="createSurveyBtnProfile" type="button" class="btn">Create Survey</button>
+				<label for="email">Email</label>
+				<label id="email"><i>Placeholder</i></label><br>
+				
+				<div>
 					<button id="logoutBtnProfile" type="button" class="btn">Logout</button>
 					<button id="deleteAccountBtn" type="button" class="btn btn-danger">Delete Account</button>
 				</div>
 			</form>
-
-			<h2>Your Surveys</h2>
-			<div id="userSurveys">Loading your surveys...</div>
 		</section>
 	</main>
 
