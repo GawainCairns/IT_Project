@@ -34,6 +34,22 @@ function getCookie(name) {
     return null;
 }
 
+// Simple auth helpers
+function isLoggedIn(){
+    const u = getCookie('user');
+    return !!(u && (typeof u === 'object' ? (u.id || u.username) : u));
+}
+
+function ensureLoggedIn(){
+    if (!isLoggedIn()) {
+        // preserve current path so user can return after login
+        const dest = encodeURIComponent(window.location.pathname + window.location.search);
+        location.href = `login.html?next=${dest}`;
+        return false;
+    }
+    return true;
+}
+
 function setUserCookie(userObj, days = 7) {
     try {
         setCookie('user', JSON.stringify({ id: userObj.id, username: userObj.username }), days);
@@ -209,6 +225,7 @@ async function fetchUserSurveys(){
 
 // Initialize dashboard page
 function initDashboard(){
+    if (!ensureLoggedIn()) return;
     const logoutBtn = el('logoutBtn');
     const profileBtn = el('profileBtn');
     if (logoutBtn) logoutBtn.addEventListener('click', logout);
@@ -218,6 +235,7 @@ function initDashboard(){
 
 // Initialize profile page
 function initProfile(){
+    if (!ensureLoggedIn()) return;
     const saveBtn = el('saveProfileBtn');
     const logoutBtn = el('logoutBtnProfile');
     const delBtn = el('deleteAccountBtn');
