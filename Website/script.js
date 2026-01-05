@@ -124,17 +124,39 @@ async function fetchSurveys(){
         if (!res.ok) { list.textContent = 'Could not load surveys'; return; }
         const surveys = await res.json();
         if (!Array.isArray(surveys) || surveys.length === 0) { list.innerHTML = '<p>No surveys yet.</p>'; return; }
-        list.innerHTML = '';
-        surveys.forEach(s => {
-            const div = document.createElement('div');
-            div.className = 'survey-item';
-            div.innerHTML = `<strong>${escapeHtml(s.title || 'Untitled')}</strong> <div class="survey-actions"><button data-id="${escapeHtml(s.id)}" class="view-btn">View</button> <button data-id="${escapeHtml(s.id)}" class="edit-btn">Edit</button> <button data-id="${escapeHtml(s.id)}" class="delete-btn">Delete</button></div>`;
-            list.appendChild(div);
-        });
-        // delegate clicks
-        list.querySelectorAll('.view-btn').forEach(b=>b.addEventListener('click', ()=>viewSurvey(b.dataset.id)));
-        list.querySelectorAll('.edit-btn').forEach(b=>b.addEventListener('click', ()=>editSurvey(b.dataset.id)));
-        list.querySelectorAll('.delete-btn').forEach(b=>b.addEventListener('click', ()=>deleteSurvey(b.dataset.id)));
+        // If the target is a table body, render rows; otherwise fall back to simple list
+        if (list.tagName === 'TBODY') {
+            list.innerHTML = '';
+            surveys.forEach(s => {
+                const tr = document.createElement('tr');
+                const responses = (s.total_responses !== undefined) ? s.total_responses : (s.responses_count !== undefined ? s.responses_count : 0);
+                tr.innerHTML = '<td>' + escapeHtml(s.title || 'Untitled') + '</td>' +
+                               '<td>' + escapeHtml(s.description || '') + '</td>' +
+                               '<td>' + escapeHtml(String(responses)) + '</td>' +
+                               '<td class="survey-actions">' +
+                                 '<button data-id="' + escapeHtml(s.id) + '" class="view-btn">View</button> ' +
+                                 '<button data-id="' + escapeHtml(s.id) + '" class="edit-btn">Edit</button> ' +
+                                 '<button data-id="' + escapeHtml(s.id) + '" class="delete-btn">Delete</button>' +
+                               '</td>';
+                list.appendChild(tr);
+            });
+            // delegate clicks
+            list.querySelectorAll('.view-btn').forEach(b=>b.addEventListener('click', ()=>viewSurvey(b.dataset.id)));
+            list.querySelectorAll('.edit-btn').forEach(b=>b.addEventListener('click', ()=>editSurvey(b.dataset.id)));
+            list.querySelectorAll('.delete-btn').forEach(b=>b.addEventListener('click', ()=>deleteSurvey(b.dataset.id)));
+        } else {
+            list.innerHTML = '';
+            surveys.forEach(s => {
+                const div = document.createElement('div');
+                div.className = 'survey-item';
+                div.innerHTML = `<strong>${escapeHtml(s.title || 'Untitled')}</strong> <div class=\"survey-actions\"><button data-id=\"${escapeHtml(s.id)}\" class=\"view-btn\">View</button> <button data-id=\"${escapeHtml(s.id)}\" class=\"edit-btn\">Edit</button> <button data-id=\"${escapeHtml(s.id)}\" class=\"delete-btn\">Delete</button></div>`;
+                list.appendChild(div);
+            });
+            // delegate clicks
+            list.querySelectorAll('.view-btn').forEach(b=>b.addEventListener('click', ()=>viewSurvey(b.dataset.id)));
+            list.querySelectorAll('.edit-btn').forEach(b=>b.addEventListener('click', ()=>editSurvey(b.dataset.id)));
+            list.querySelectorAll('.delete-btn').forEach(b=>b.addEventListener('click', ()=>deleteSurvey(b.dataset.id)));
+        }
     } catch (err) {
         list.textContent = 'Error loading surveys';
         console.error(err);
