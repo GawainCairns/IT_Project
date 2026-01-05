@@ -16,6 +16,24 @@ function deleteCookie(name) {
     document.cookie = name + '=; Max-Age=0; path=/';
 }
 
+// Read cookie by name and try to parse JSON
+function getCookie(name) {
+    const pairs = document.cookie.split(';').map(s => s.trim());
+    for (const p of pairs) {
+        if (!p) continue;
+        const [k, ...rest] = p.split('=');
+        if (k === name) {
+            try {
+                const v = decodeURIComponent(rest.join('='));
+                return JSON.parse(v);
+            } catch (e) {
+                try { return decodeURIComponent(rest.join('=')); } catch (_) { return null; }
+            }
+        }
+    }
+    return null;
+}
+
 function setUserCookie(userObj, days = 7) {
     try {
         setCookie('user', JSON.stringify({ id: userObj.id, username: userObj.username }), days);
@@ -214,8 +232,51 @@ function initProfile(){
 
 // Auto-init depending on page
 document.addEventListener('DOMContentLoaded', ()=>{
+    // Update navbar links depending on logged-in user
+    try { updateNavbar(); } catch (e) { /* ignore */ }
     const href = window.location.href;
     if (href.includes('dashboard.html') || document.title.includes('Dashboard')) initDashboard();
     else if (href.includes('profile.html') || document.title.includes('Profile')) initProfile();
 });
+
+// Replace login/register with profile + logout when user cookie exists
+function updateNavbar(){
+    const nav = document.querySelector('.navbar');
+    if (!nav) return;
+    const user = getCookie('user');
+    const profileExists = !!nav.querySelector('a[href="profile.html"]');
+    const loginA = nav.querySelector('a[href="login.html"]');
+    const registerA = nav.querySelector('a[href="register.html"]');
+
+    if (user && typeof user === 'object' && user.username) {
+        if (profileExists) return; // already updated
+        // remove login/register anchors if present
+        if (loginA && loginA.parentElement) loginA.parentElement.remove();
+        if (registerA && registerA.parentElement) registerA.parentElement.remove();
+
+        const liProfile = document.createElement('li'); liProfile.className = 'navbar_right';
+        const aProfile = document.createElement('a'); aProfile.href = 'profile.html'; aProfile.textContent = escapeHtml(user.username || 'Profile');
+        liProfile.appendChild(aProfile);
+
+        const liLogout = document.createElement('li'); liLogout.className = 'navbar_right';
+        const aLogout = document.createElement('a'); aLogout.href = '#'; aLogout.textContent = 'Logout';
+        aLogout.addEventListener('click', function(e){ e.preventDefault(); logout(); });
+        liLogout.appendChild(aLogout);
+
+        nav.appendChild(liProfile);
+        nav.appendChild(liLogout);
+    } else {
+        // ensure login/register links exist
+        if (!loginA) {
+            const li = document.createElement('li'); li.className = 'navbar_right';
+            const a = document.createElement('a'); a.href = 'login.html'; a.textContent = 'Login';
+            li.appendChild(a); nav.appendChild(li);
+        }
+        if (!registerA) {
+            const li = document.createElement('li'); li.className = 'navbar_right';
+            const a = document.createElement('a'); a.href = 'register.html'; a.textContent = 'Register';
+            li.appendChild(a); nav.appendChild(li);
+        }
+    }
+}
 
