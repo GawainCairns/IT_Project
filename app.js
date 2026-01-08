@@ -8,14 +8,14 @@ const app = express();
 app.use(express.json());
 
 // Test database connection
-db.connect();
-app.get("/test-db", (req, res) => {
-  db.query("SELECT 1", (err) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+app.get("/test-db", async (req, res) => {
+  try {
+    await db.connect();
+    await db.query("SELECT 1");
     res.json({ message: "MySQL connected successfully!" });
-  });
+  } catch (err) {
+    res.status(500).json({ error: err && err.message ? err.message : String(err) });
+  }
 });
 
 app.get("/", (req, res) => {
