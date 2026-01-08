@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json());
 
 // Test database connection
+db.connect();
 app.get("/test-db", (req, res) => {
   db.query("SELECT 1", (err) => {
     if (err) {
