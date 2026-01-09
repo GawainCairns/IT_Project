@@ -1,12 +1,13 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const db = require("./db");
+const db = require("./config/db");
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
+/*
 // Test database connection
 app.get("/test-db", async (req, res) => {
   try {
@@ -17,6 +18,7 @@ app.get("/test-db", async (req, res) => {
     res.status(500).json({ error: err && err.message ? err.message : String(err) });
   }
 });
+*/
 
 app.get("/", (req, res) => {
   res.send("Express + MySQL running 🚀");
